@@ -55,16 +55,20 @@ No data is collected, transmitted, or stored beyond your local on/off preference
 Run the browser integration tests locally with:
 
 ```bash
-npm ci
-npx playwright install chromium
+npm ci --ignore-scripts
+npx puppeteer browsers install chrome
 npm test
 ```
+
+The project follows the Node.js 24 LTS major channel. Puppeteer drives Chrome while Node's built-in
+test runner executes the integration suite. Dependency lifecycle scripts are disabled during CI
+installation; Chrome is downloaded explicitly afterward.
 
 Format the project with `npm run format`. GitHub Actions and tagged Cloud Builds both run
 `npm run verify`, which rejects formatting drift before running the browser tests.
 
-The tagged Google Cloud Build runs the same tests in Playwright's Chromium image. The extension ZIP
-is created and uploaded to the Chrome Web Store only after all tests pass. The build waits for
+The tagged Google Cloud Build runs the same Puppeteer tests against Chrome. The extension ZIP is
+created and uploaded to the Chrome Web Store only after all tests pass. The build waits for
 asynchronous package validation, then submits the revision for review. After Chrome Web Store
 approval, the revision is published automatically. Store validation warnings are treated as release
 failures.

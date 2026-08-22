@@ -1,11 +1,15 @@
 steps:
-  - name: mcr.microsoft.com/playwright:v1.62.1-noble
+  - name: node:24-bookworm
     id: test-extension
     entrypoint: bash
+    env:
+      - CI=true
+      - PUPPETEER_CACHE_DIR=/workspace/.cache/puppeteer
     args:
       - -euc
       - |
-        npm ci
+        npm ci --ignore-scripts
+        npx puppeteer browsers install chrome --install-deps
         npm run verify
 
   - name: ubuntu:24.04
