@@ -92,6 +92,10 @@ DOMstack runs entirely locally. It does not:
 
 See the full [Privacy Policy](PRIVACY.md).
 
+## Development disclosure
+
+This repository was built with assistance from Claude Opus 4.6 and ChatGPT 5.6 Sol.
+
 ## License
 
 MIT
