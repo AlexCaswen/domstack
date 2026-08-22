@@ -1,8 +1,24 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": ["config:recommended", "docker:pinDigests", "helpers:pinGitHubActionDigests"],
+  "enabledManagers": ["npm", "github-actions", "cloudbuild", "nvm", "nodenv"],
   "dependencyDashboard": true,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
   "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions"
+    },
+    {
+      "matchManagers": ["cloudbuild"],
+      "groupName": "Cloud Build images"
+    },
     {
       "matchPackageNames": ["puppeteer"],
       "groupName": "Puppeteer"
@@ -15,6 +31,11 @@
       "matchPackageNames": ["node"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "groupName": "Node 24 LTS"
+    },
+    {
+      "matchPackageNames": ["node"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ]
 }
