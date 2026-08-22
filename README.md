@@ -70,6 +70,9 @@ The service account used by the build must be added under **Account** in the Chr
 Store Developer Dashboard. The Chrome Web Store API must also be enabled in the build's
 Google Cloud project.
 
+The public publisher UUID is stored as two Cloud Build substitution fragments because a
+complete UUID is incorrectly classified as an OpenVSX access token by GitHub secret scanning.
+
 ## Privacy
 
 DOMstack runs entirely locally. It does not:
