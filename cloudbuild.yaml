@@ -99,12 +99,6 @@ steps:
           --data '{"publishType":"DEFAULT_PUBLISH","blockOnWarnings":true}' \
           "$${ITEM_URL}:publish"
 
-artifacts:
-  objects:
-    location: "gs://${PROJECT_ID}_cloudbuild/domstack/${TAG_NAME}/"
-    paths:
-      - "domstack-${TAG_NAME}.zip"
-
 options:
   logging: CLOUD_LOGGING_ONLY
 
