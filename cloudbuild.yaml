@@ -8,6 +8,7 @@ steps:
     args:
       - -euc
       - |
+        apt-get update
         npm ci --ignore-scripts
         npx puppeteer browsers install chrome --install-deps
         npm run verify
