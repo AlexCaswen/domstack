@@ -35,6 +35,7 @@ steps:
       - -euc
       - |
         TOKEN="$$(gcloud auth print-access-token \
+          --impersonate-service-account="${SERVICE_ACCOUNT_EMAIL}" \
           --scopes=https://www.googleapis.com/auth/chromewebstore)"
         PUBLISHER_ID="${_CWS_PUBLISHER_ID_PREFIX}-${_CWS_PUBLISHER_ID_SUFFIX}"
         UPLOAD_URL="https://chromewebstore.googleapis.com/upload/v2/publishers/$${PUBLISHER_ID}/items/${_CWS_EXTENSION_ID}:upload"
@@ -55,6 +56,7 @@ steps:
       - -euc
       - |
         TOKEN="$$(gcloud auth print-access-token \
+          --impersonate-service-account="${SERVICE_ACCOUNT_EMAIL}" \
           --scopes=https://www.googleapis.com/auth/chromewebstore)"
         PUBLISHER_ID="${_CWS_PUBLISHER_ID_PREFIX}-${_CWS_PUBLISHER_ID_SUFFIX}"
         ITEM_URL="https://chromewebstore.googleapis.com/v2/publishers/$${PUBLISHER_ID}/items/${_CWS_EXTENSION_ID}"

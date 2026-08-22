@@ -41,7 +41,7 @@ test("generated manifest preserves the extension contract", () => {
 
   assert.equal(manifest.manifest_version, 3);
   assert.equal(manifest.name, "DOMstack");
-  assert.equal(manifest.version, "1.0.1");
+  assert.equal(manifest.version, "1.0.2");
   assert.deepEqual(manifest.permissions, ["storage"]);
   assert.deepEqual(manifest.host_permissions, ["*://*.substack.com/*"]);
   assert.equal(manifest.action.default_popup, "popup.html");
