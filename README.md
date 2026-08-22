@@ -2,6 +2,9 @@
 
 **Auto-skip Substack's subscribe-flow interruptions.**
 
+[![CI](https://github.com/AlexCaswen/domstack/actions/workflows/ci.yml/badge.svg)](https://github.com/AlexCaswen/domstack/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 On Substack, after you subscribe to a newsletter, the website chains together a series of
 interstitial prompts that cannot be turned off in settings. This Chrome extension automatically
 dismisses, blocks, and skips those annoying intrusions, allowing you to get back to reading your
