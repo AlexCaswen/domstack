@@ -2,17 +2,29 @@
   "name": "domstack",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=24 <25"
   },
   "scripts": {
+    "dev": "wxt",
+    "prepare": "wxt prepare",
+    "build": "wxt build --browser chrome --mv3",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node --test --test-concurrency=1 tests/*.test.js",
-    "verify": "npm run format:check && npm test"
+    "check": "wxt prepare && svelte-check --tsconfig ./tsconfig.json",
+    "test": "node --test --test-concurrency=1 tests/*.test.cjs",
+    "verify": "npm run format:check && npm run check && npm run build && npm test"
   },
   "devDependencies": {
+    "@types/chrome": "0.2.7",
+    "@wxt-dev/module-svelte": "2.0.5",
     "prettier": "3.9.6",
-    "puppeteer": "25.8.0"
+    "prettier-plugin-svelte": "4.1.1",
+    "puppeteer": "25.8.0",
+    "svelte": "5.56.10",
+    "svelte-check": "4.7.6",
+    "typescript": "6.0.3",
+    "wxt": "0.21.4"
   }
 }

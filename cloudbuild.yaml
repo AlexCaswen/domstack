@@ -22,15 +22,8 @@ steps:
       - |
         apt-get update
         apt-get install --yes --no-install-recommends zip
-        zip -r "/workspace/domstack-${TAG_NAME}.zip" \
-          manifest.json \
-          content.js \
-          popup.html \
-          popup.js \
-          styles.css \
-          icons \
-          LICENSE \
-          README.md
+        cd /workspace/.output/chrome-mv3
+        zip -r "/workspace/domstack-${TAG_NAME}.zip" .
 
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
     id: upload-chrome-web-store

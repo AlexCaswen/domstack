@@ -8,6 +8,10 @@
       "groupName": "Puppeteer"
     },
     {
+      "matchPackageNames": ["wxt", "@wxt-dev/module-svelte", "svelte", "svelte-check"],
+      "groupName": "WXT and Svelte"
+    },
+    {
       "matchPackageNames": ["node"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "groupName": "Node 24 LTS"

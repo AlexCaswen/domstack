@@ -37,11 +37,13 @@ avoids hiding unrelated Substack dialogs and keeps the on/off switch reliable.
 
 ### From source (developer mode)
 
-1. Clone or download this folder
-2. Open `chrome://extensions/`
-3. Enable **Developer mode** (top right)
-4. Click **Load unpacked** and select the `domstack` folder
-5. Done — the extension is active on all `*.substack.com` pages
+1. Clone or download this repository
+2. Install Node.js 24 and run `npm ci --ignore-scripts`
+3. Run `npm run build`
+4. Open `chrome://extensions/`
+5. Enable **Developer mode** (top right)
+6. Click **Load unpacked** and select `.output/chrome-mv3`
+7. Done — the extension is active on all `*.substack.com` pages
 
 ### From Chrome Web Store
 
@@ -61,15 +63,17 @@ Run the browser integration tests locally with:
 ```bash
 npm ci --ignore-scripts
 npx puppeteer browsers install chrome
-npm test
+npm run verify
 ```
 
-The project follows the Node.js 24 LTS major channel. Puppeteer drives Chrome while Node's built-in
-test runner executes the integration suite. Dependency lifecycle scripts are disabled during CI
-installation; Chrome is downloaded explicitly afterward.
+The project follows the Node.js 24 LTS major channel. WXT builds the Manifest V3 package in
+`.output/chrome-mv3`, Svelte renders the popup, and TypeScript covers the popup and content script.
+Puppeteer drives Chrome while Node's built-in test runner executes the integration suite. Dependency
+lifecycle scripts are disabled during CI installation; Chrome is downloaded explicitly afterward.
 
-Format the project with `npm run format`. GitHub Actions and tagged Cloud Builds both run
-`npm run verify`, which rejects formatting drift before running the browser tests.
+Use `npm run dev` for WXT's development mode and `npm run format` to format the project. GitHub
+Actions and tagged Cloud Builds both run `npm run verify`, which checks formatting and types, builds
+the extension, and runs the browser tests.
 
 The tagged Google Cloud Build runs the same Puppeteer tests against Chrome. The extension ZIP is
 created and uploaded to the Chrome Web Store only after all tests pass. The build waits for
