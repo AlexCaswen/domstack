@@ -90,6 +90,8 @@ DOMstack runs entirely locally. It does not:
 - Communicate with any external server
 - Require an account or sign-in
 
+See the full [Privacy Policy](PRIVACY.md).
+
 ## License
 
 MIT
