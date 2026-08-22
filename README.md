@@ -50,6 +50,19 @@ present. This avoids hiding unrelated Substack dialogs and keeps the on/off swit
 
 No data is collected, transmitted, or stored beyond your local on/off preference.
 
+## Testing
+
+Run the browser integration tests locally with:
+
+```bash
+npm ci
+npx playwright install chromium
+npm test
+```
+
+The tagged Google Cloud Build runs the same tests in Playwright's Chromium image.
+The extension ZIP is created and uploaded only after all tests pass.
+
 ## Privacy
 
 DOMstack runs entirely locally. It does not:

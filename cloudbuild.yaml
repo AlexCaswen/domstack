@@ -1,6 +1,17 @@
 steps:
+  - name: mcr.microsoft.com/playwright:v1.62.1-noble
+    id: test-extension
+    entrypoint: bash
+    args:
+      - -euc
+      - |
+        npm ci
+        npm test
+
   - name: ubuntu:24.04
     id: package-extension
+    waitFor:
+      - test-extension
     entrypoint: bash
     args:
       - -euc
@@ -25,3 +36,5 @@ artifacts:
 
 options:
   logging: CLOUD_LOGGING_ONLY
+
+timeout: 1200s

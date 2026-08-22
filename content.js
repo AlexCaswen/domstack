@@ -48,6 +48,7 @@
     "spread the word",
     "why did you subscribe",
     "get the app",
+    "get the substack app",
     "download the app",
     "download the substack app",
     "subscribe to more",
@@ -71,6 +72,12 @@
   /** Normalise text for matching. */
   function norm(s) {
     return (s || "").toLowerCase().trim().replace(/\s+/g, " ");
+  }
+
+  /** Check rendered visibility without rejecting fixed-position elements. */
+  function isVisible(el) {
+    const style = getComputedStyle(el);
+    return style.display !== "none" && style.visibility !== "hidden" && el.getClientRects().length > 0;
   }
 
   /** Find the best dismiss button inside an element. */
@@ -129,7 +136,7 @@
     for (const sel of selectors) {
       try {
         for (const el of document.querySelectorAll(sel)) {
-          if (!seen.has(el) && el.offsetParent !== null) {
+          if (!seen.has(el) && isVisible(el)) {
             seen.add(el);
             results.push(el);
           }
@@ -208,7 +215,7 @@
       const text = norm(el.innerText || el.textContent);
       const isSmallSkip =
         (text === "no thanks" || text === "no, thanks" || text === "skip" || text === "maybe later") &&
-        el.offsetParent !== null;
+        isVisible(el);
 
       if (isSmallSkip) {
         // Verify it's inside something that looks like a subscribe flow
