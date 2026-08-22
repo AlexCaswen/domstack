@@ -1,0 +1,9 @@
+steps:
+  - name: 'ubuntu'
+    script: |
+      apt-get update && apt-get install -y zip
+      zip -r domstack-extension.zip . -x "*.git*" -x "cloudbuild.yaml"
+      
+  # Optional: Copy the zip to a Google Cloud Storage bucket if you create one
+  # - name: 'gcr.io/cloud-builders/gsutil'
+  #   args: ['cp', 'domstack-extension.zip', 'gs://YOUR_BUCKET_NAME/${TAG_NAME}-extension.zip']
