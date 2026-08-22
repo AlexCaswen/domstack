@@ -43,7 +43,59 @@ steps:
           --request POST \
           --header "Authorization: Bearer $${TOKEN}" \
           --upload-file "/workspace/domstack-${TAG_NAME}.zip" \
+          --output /workspace/cws-upload-response.json \
           "$${UPLOAD_URL}"
+        python3 -m json.tool /workspace/cws-upload-response.json
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    id: submit-chrome-web-store
+    waitFor:
+      - upload-chrome-web-store
+    entrypoint: bash
+    args:
+      - -euc
+      - |
+        TOKEN="$$(gcloud auth print-access-token \
+          --scopes=https://www.googleapis.com/auth/chromewebstore)"
+        ITEM_URL="https://chromewebstore.googleapis.com/v2/publishers/${_CWS_PUBLISHER_ID}/items/${_CWS_EXTENSION_ID}"
+        STATUS_JSON="$$(cat /workspace/cws-upload-response.json)"
+        UPLOAD_STATE="$$(printf '%s' "$${STATUS_JSON}" | \
+          python3 -c 'import json,sys; print(json.load(sys.stdin).get("uploadState", ""))')"
+
+        for ATTEMPT in $$(seq 1 30); do
+          case "$${UPLOAD_STATE}" in
+            SUCCEEDED)
+              break
+              ;;
+            FAILED|NOT_FOUND)
+              printf 'Chrome Web Store upload failed: %s\n' "$${STATUS_JSON}" >&2
+              exit 1
+              ;;
+            IN_PROGRESS)
+              if [ "$${ATTEMPT}" -eq 30 ]; then
+                printf 'Timed out waiting for Chrome Web Store upload: %s\n' "$${STATUS_JSON}" >&2
+                exit 1
+              fi
+              STATUS_JSON="$$(curl --fail-with-body --silent --show-error \
+                --header "Authorization: Bearer $${TOKEN}" \
+                "$${ITEM_URL}:fetchStatus")"
+              UPLOAD_STATE="$$(printf '%s' "$${STATUS_JSON}" | \
+                python3 -c 'import json,sys; print(json.load(sys.stdin).get("lastAsyncUploadState", ""))')"
+              sleep 10
+              ;;
+            *)
+              printf 'Unexpected Chrome Web Store upload state: %s\n' "$${UPLOAD_STATE}" >&2
+              exit 1
+              ;;
+          esac
+        done
+
+        curl --fail-with-body --silent --show-error \
+          --request POST \
+          --header "Authorization: Bearer $${TOKEN}" \
+          --header "Content-Type: application/json" \
+          --data '{"publishType":"DEFAULT_PUBLISH","blockOnWarnings":true}' \
+          "$${ITEM_URL}:publish"
 
 artifacts:
   objects:

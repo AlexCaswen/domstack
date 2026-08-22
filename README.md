@@ -62,7 +62,9 @@ npm test
 
 The tagged Google Cloud Build runs the same tests in Playwright's Chromium image.
 The extension ZIP is created and uploaded to the Chrome Web Store only after all tests pass.
-The upload creates a new draft revision; it does not submit that revision for review.
+The build waits for asynchronous package validation, then submits the revision for review.
+After Chrome Web Store approval, the revision is published automatically. Store validation
+warnings are treated as release failures.
 
 The service account used by the build must be added under **Account** in the Chrome Web
 Store Developer Dashboard. The Chrome Web Store API must also be enabled in the build's
