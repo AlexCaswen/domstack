@@ -101,4 +101,4 @@ This repository was built with assistance from Claude Opus 4.6 and ChatGPT 5.6 S
 
 ## License
 
-MIT
+[MIT License](LICENSE)
