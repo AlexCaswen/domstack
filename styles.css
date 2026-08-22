@@ -1,0 +1,8 @@
+/*
+ * Intentionally empty.
+ *
+ * DOMstack previously hid generic Substack modal classes here. Static
+ * content-script CSS cannot respect the enabled preference and can hide
+ * legitimate dialogs before content.js verifies their text. All dismissal
+ * is now performed by content.js after a target modal is positively matched.
+ */
