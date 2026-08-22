@@ -77,7 +77,9 @@
   /** Check rendered visibility without rejecting fixed-position elements. */
   function isVisible(el) {
     const style = getComputedStyle(el);
-    return style.display !== "none" && style.visibility !== "hidden" && el.getClientRects().length > 0;
+    return (
+      style.display !== "none" && style.visibility !== "hidden" && el.getClientRects().length > 0
+    );
   }
 
   /** Find the best dismiss button inside an element. */
@@ -189,7 +191,10 @@
     if (
       style.position === "fixed" &&
       (style.inset === "0px" ||
-        (style.top === "0px" && style.left === "0px" && style.width === "100%" && style.height === "100%"))
+        (style.top === "0px" &&
+          style.left === "0px" &&
+          style.width === "100%" &&
+          style.height === "100%"))
     ) {
       dismissed.add(modal);
       setTimeout(() => {
@@ -214,7 +219,10 @@
       if (dismissed.has(el)) continue;
       const text = norm(el.innerText || el.textContent);
       const isSmallSkip =
-        (text === "no thanks" || text === "no, thanks" || text === "skip" || text === "maybe later") &&
+        (text === "no thanks" ||
+          text === "no, thanks" ||
+          text === "skip" ||
+          text === "maybe later") &&
         isVisible(el);
 
       if (isSmallSkip) {

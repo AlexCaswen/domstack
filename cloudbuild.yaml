@@ -6,7 +6,7 @@ steps:
       - -euc
       - |
         npm ci
-        npm test
+        npm run verify
 
   - name: ubuntu:24.04
     id: package-extension

@@ -2,9 +2,9 @@
 
 **Auto-skip Substack's subscribe-flow interruptions.**
 
-When you subscribe to a Substack newsletter, the platform chains together a series of
-interstitial prompts — pledge your support, share on Twitter/X, tell your friends, get the app,
-and more. DOMstack automatically dismisses these so you can subscribe and get straight to reading.
+When you subscribe to a Substack newsletter, the platform chains together a series of interstitial
+prompts — pledge your support, share on Twitter/X, tell your friends, get the app, and more.
+DOMstack automatically dismisses these so you can subscribe and get straight to reading.
 
 ## What it skips
 
@@ -22,12 +22,12 @@ and more. DOMstack automatically dismisses these so you can subscribe and get st
 
 ## How it works
 
-DOMstack uses a `MutationObserver` to watch for dynamically injected modals and matches
-dismiss buttons by their visible text content (e.g. "No thanks", "Skip", "Maybe later")
-rather than CSS class names. This makes it resilient to Substack's frequent frontend updates.
+DOMstack uses a `MutationObserver` to watch for dynamically injected modals and matches dismiss
+buttons by their visible text content (e.g. "No thanks", "Skip", "Maybe later") rather than CSS
+class names. This makes it resilient to Substack's frequent frontend updates.
 
-The script only acts after both a modal-like container and recognized prompt text are
-present. This avoids hiding unrelated Substack dialogs and keeps the on/off switch reliable.
+The script only acts after both a modal-like container and recognized prompt text are present. This
+avoids hiding unrelated Substack dialogs and keeps the on/off switch reliable.
 
 ## Installation
 
@@ -41,7 +41,7 @@ present. This avoids hiding unrelated Substack dialogs and keeps the on/off swit
 
 ### From Chrome Web Store
 
-*(link here when published)*
+_(link here when published)_
 
 ## Permissions
 
@@ -60,18 +60,21 @@ npx playwright install chromium
 npm test
 ```
 
-The tagged Google Cloud Build runs the same tests in Playwright's Chromium image.
-The extension ZIP is created and uploaded to the Chrome Web Store only after all tests pass.
-The build waits for asynchronous package validation, then submits the revision for review.
-After Chrome Web Store approval, the revision is published automatically. Store validation
-warnings are treated as release failures.
+Format the project with `npm run format`. GitHub Actions and tagged Cloud Builds both run
+`npm run verify`, which rejects formatting drift before running the browser tests.
 
-The service account used by the build must be added under **Account** in the Chrome Web
-Store Developer Dashboard. The Chrome Web Store API must also be enabled in the build's
-Google Cloud project.
+The tagged Google Cloud Build runs the same tests in Playwright's Chromium image. The extension ZIP
+is created and uploaded to the Chrome Web Store only after all tests pass. The build waits for
+asynchronous package validation, then submits the revision for review. After Chrome Web Store
+approval, the revision is published automatically. Store validation warnings are treated as release
+failures.
 
-The public publisher UUID is stored as two Cloud Build substitution fragments because a
-complete UUID is incorrectly classified as an OpenVSX access token by GitHub secret scanning.
+The service account used by the build must be added under **Account** in the Chrome Web Store
+Developer Dashboard. The Chrome Web Store API must also be enabled in the build's Google Cloud
+project.
+
+The public publisher UUID is stored as two Cloud Build substitution fragments because a complete
+UUID is incorrectly classified as an OpenVSX access token by GitHub secret scanning.
 
 ## Privacy
 

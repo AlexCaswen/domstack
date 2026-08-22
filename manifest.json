@@ -4,9 +4,7 @@
   "version": "1.0.0",
   "description": "Auto-skips Substack's pledge prompts, share nags, and other subscribe-flow interruptions. Just subscribe and read.",
   "permissions": ["storage"],
-  "host_permissions": [
-    "*://*.substack.com/*"
-  ],
+  "host_permissions": ["*://*.substack.com/*"],
   "content_scripts": [
     {
       "matches": ["*://*.substack.com/*"],
