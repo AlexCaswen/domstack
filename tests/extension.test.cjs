@@ -20,7 +20,7 @@ after(async () => {
   await browser?.close();
 });
 
-async function serveSubstackFixture(page, body) {
+async function serveSubstackFixture(page, body, pathname = "/post") {
   await page.setRequestInterception(true);
   page.on("request", (request) => {
     if (request.url().startsWith("https://test.substack.com/")) {
@@ -33,7 +33,7 @@ async function serveSubstackFixture(page, body) {
 
     request.continue();
   });
-  await page.goto("https://test.substack.com/post", { waitUntil: "domcontentloaded" });
+  await page.goto(`https://test.substack.com${pathname}`, { waitUntil: "domcontentloaded" });
 }
 
 test("generated manifest preserves the extension contract", () => {
@@ -41,7 +41,7 @@ test("generated manifest preserves the extension contract", () => {
 
   assert.equal(manifest.manifest_version, 3);
   assert.equal(manifest.name, "DOMstack");
-  assert.equal(manifest.version, "1.0.2");
+  assert.equal(manifest.version, "1.0.3");
   assert.deepEqual(manifest.permissions, ["storage"]);
   assert.deepEqual(manifest.host_permissions, ["*://*.substack.com/*"]);
   assert.equal(manifest.action.default_popup, "popup.html");
@@ -112,6 +112,49 @@ test("uses the backdrop fallback for a recognized prompt without a button", asyn
 
     await page.waitForFunction(() => !document.querySelector("#prompt"));
     assert.equal(await page.$("#prompt"), null);
+  } finally {
+    await page.close();
+  }
+});
+
+for (const [name, heading, dismissText] of [
+  ["recommendation selection", "Get QC's recommendations", "Skip"],
+  ["publication recommendation", "Do you want to recommend Thicket Forte?", "Skip for now"],
+  ["subscription sharing", "Spread the word", "Maybe later"],
+]) {
+  test(`skips the full-page ${name} subscribe step`, async () => {
+    const page = await browser.newPage();
+    try {
+      await serveSubstackFixture(
+        page,
+        `<main id="step">
+           <h1>${heading}</h1>
+           <button onclick="document.querySelector('#step').remove()">${dismissText}</button>
+         </main>`,
+        "/subscribe?utm_source=test"
+      );
+
+      await page.waitForFunction(() => !document.querySelector("#step"));
+      assert.equal(await page.$("#step"), null);
+    } finally {
+      await page.close();
+    }
+  });
+}
+
+test("does not click a page-level skip outside the subscribe flow", async () => {
+  const page = await browser.newPage();
+  try {
+    await serveSubstackFixture(
+      page,
+      `<main id="article">
+         <h1>Spread the word</h1>
+         <button onclick="document.querySelector('#article').remove()">Maybe later</button>
+       </main>`
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    assert.notEqual(await page.$("#article"), null);
   } finally {
     await page.close();
   }

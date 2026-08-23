@@ -32,6 +32,7 @@ export default defineContentScript({
       "close",
       "not right now",
       "remind me later",
+      "skip for now",
     ];
 
     // ── Modal-content indicators ──────────────────────────────────────
@@ -55,6 +56,13 @@ export default defineContentScript({
       "subscribe to more",
       "recommendations for you",
       "you might also like",
+    ];
+
+    // Full-page prompts shown only during Substack's /subscribe onboarding flow.
+    const SUBSCRIBE_PAGE_INDICATORS = [
+      "subscribe for free to",
+      "do you want to recommend",
+      "spread the word",
     ];
 
     // ── Utility ───────────────────────────────────────────────────────
@@ -112,6 +120,23 @@ export default defineContentScript({
     function isTargetModal(el: HTMLElement): boolean {
       const text = norm(el.innerText || el.textContent);
       return MODAL_INDICATORS.some((indicator) => text.includes(indicator));
+    }
+
+    /** Check for a recognized full-page prompt on Substack's subscribe route. */
+    function isTargetSubscribePage(): boolean {
+      const path = location.pathname.replace(/\/+$/, "") || "/";
+      if (path !== "/subscribe") return false;
+
+      const headingText = norm(
+        Array.from(document.querySelectorAll<HTMLElement>("h1, h2, h3"))
+          .map((heading) => heading.innerText || heading.textContent)
+          .join(" ")
+      );
+
+      return (
+        SUBSCRIBE_PAGE_INDICATORS.some((indicator) => headingText.includes(indicator)) ||
+        /get .+ recommendations/.test(headingText)
+      );
     }
 
     /**
@@ -214,7 +239,10 @@ export default defineContentScript({
     // This catches the "continue" / "skip" links that appear between them.
 
     function sweepSubscribeFlow() {
-      // Look for standalone skip/no-thanks links outside obvious modals
+      const targetSubscribePage = isTargetSubscribePage();
+
+      // Look for standalone skip/no-thanks links inside a recognized modal or
+      // on a recognized full-page /subscribe onboarding screen.
       const allLinks = document.querySelectorAll<HTMLElement>("a, button");
       for (const el of allLinks) {
         if (dismissed.has(el)) continue;
@@ -223,6 +251,7 @@ export default defineContentScript({
           (text === "no thanks" ||
             text === "no, thanks" ||
             text === "skip" ||
+            text === "skip for now" ||
             text === "maybe later") &&
           isVisible(el);
 
@@ -231,7 +260,7 @@ export default defineContentScript({
           const parent = el.closest<HTMLElement>(
             '[class*="modal"], [class*="overlay"], [class*="dialog"], [class*="prompt"], [class*="flow"], [class*="onboarding"], [role="dialog"]'
           );
-          if (parent && isTargetModal(parent)) {
+          if ((parent && isTargetModal(parent)) || targetSubscribePage) {
             dismissed.add(el);
             setTimeout(() => {
               el.click();

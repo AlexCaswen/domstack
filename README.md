@@ -7,8 +7,8 @@
 
 On Substack, after you subscribe to a newsletter, the website chains together a series of
 interstitial prompts that cannot be turned off in settings. This Chrome extension automatically
-dismisses, blocks, and skips those annoying intrusions, allowing you to get back to reading your
-favourite authors.
+dismisses and skips those annoying intrusions, allowing you to get back to reading your favourite
+authors.
 
 ## What it skips
 
@@ -47,14 +47,16 @@ avoids hiding unrelated Substack dialogs and keeps the on/off switch reliable.
 
 ### From Chrome Web Store
 
-_(link here when published)_
+[Install DOMstack from the Chrome Web Store](https://chromewebstore.google.com/detail/domstack/mlplebikjaagepjioojfdmcoiamjffhc).
 
 ## Permissions
 
 - **`storage`** — saves your enabled/disabled preference
 - **Host: `*.substack.com`** — content script runs only on Substack domains
 
-No data is collected, transmitted, or stored beyond your local on/off preference.
+DOMstack stores only your enabled/disabled preference using Chrome synchronized storage. DOMstack
+does not receive this setting, although Chrome may synchronize it between browsers according to your
+Google account settings.
 
 ## Testing
 
@@ -90,7 +92,9 @@ UUID is incorrectly classified as an OpenVSX access token by GitHub secret scann
 
 ## Privacy
 
-DOMstack runs entirely locally. It does not:
+DOMstack performs all page analysis locally and does not communicate with developer-operated or
+third-party servers. Chrome may synchronize the enabled/disabled preference through
+`chrome.storage.sync`. DOMstack does not:
 
 - Collect or transmit any data
 - Track your browsing or subscriptions

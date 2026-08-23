@@ -28,6 +28,11 @@ or synchronization credentials.
 DOMstack does not execute remotely hosted code and does not communicate with developer-operated or
 third-party servers. It does not use advertising, analytics, tracking, or payment services.
 
+## Limited Use
+
+DOMstack's use of information received from Google APIs adheres to the Chrome Web Store User Data
+Policy, including the Limited Use requirements.
+
 ## Data retention and deletion
 
 The developer retains no user data. Users can remove the saved enabled-or-paused setting by
