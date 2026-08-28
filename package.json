@@ -21,7 +21,7 @@
     "@wxt-dev/module-svelte": "2.0.5",
     "prettier": "3.9.6",
     "prettier-plugin-svelte": "4.1.1",
-    "puppeteer": "25.8.0",
+    "puppeteer": "25.9.0",
     "svelte": "5.56.10",
     "svelte-check": "4.7.6",
     "typescript": "6.0.3",
