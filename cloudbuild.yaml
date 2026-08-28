@@ -1,5 +1,5 @@
 steps:
-  - name: node:24-bookworm
+  - name: node:24-bookworm@sha256:be23f54a88d34e8824c741b19b91064094f92c1c97b194144bfc8b50d67258e2
     id: test-extension
     entrypoint: bash
     env:
@@ -13,7 +13,7 @@ steps:
         npx puppeteer browsers install chrome --install-deps
         npm run verify
 
-  - name: ubuntu:24.04
+  - name: ubuntu:24.04@sha256:33ceb71981b602c1a7443a53469e4dba065f7503eab3078a2d7a57a2ab987517
     id: package-extension
     waitFor:
       - test-extension
@@ -26,7 +26,7 @@ steps:
         cd /workspace/.output/chrome-mv3
         zip -r "/workspace/domstack-${TAG_NAME}.zip" .
 
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:d4d7a9a1e3d824db170e56764d5bfe39d9f23924cd51505e0792d360cbed209c
     id: upload-chrome-web-store
     waitFor:
       - package-extension
@@ -47,7 +47,7 @@ steps:
           "$${UPLOAD_URL}"
         python3 -m json.tool /workspace/cws-upload-response.json
 
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:d4d7a9a1e3d824db170e56764d5bfe39d9f23924cd51505e0792d360cbed209c
     id: submit-chrome-web-store
     waitFor:
       - upload-chrome-web-store
