@@ -12,11 +12,12 @@
     "build": "wxt build --browser chrome --mv3",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "wxt prepare && svelte-check --tsconfig ./tsconfig.json",
+    "check": "wxt prepare && svelte-check --tsgo --tsconfig ./tsconfig.json",
     "test": "node --test --test-concurrency=1 tests/*.test.cjs",
     "verify": "npm run format:check && npm run check && npm run build && npm test"
   },
   "devDependencies": {
+    "@typescript/native": "npm:typescript@7.0.2",
     "@types/chrome": "0.2.7",
     "@wxt-dev/module-svelte": "2.0.5",
     "prettier": "3.9.6",
