@@ -13,7 +13,7 @@ steps:
         npx puppeteer browsers install chrome --install-deps
         npm run verify
 
-  - name: ubuntu:24.04@sha256:33ceb71981b602c1a7443a53469e4dba065f7503eab3078a2d7a57a2ab987517
+  - name: ubuntu:26.04@sha256:2260313b31c8c011cd2eebe728008efac1b3982be73eb71348ea2648d2c0e09b
     id: package-extension
     waitFor:
       - test-extension
