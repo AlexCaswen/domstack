@@ -166,8 +166,15 @@ test("popup loads, persists its toggle, and reloads matching tabs", async () => 
     args: process.env.CI ? ["--no-sandbox"] : [],
   });
   const server = http.createServer((request, response) => {
-    const requestPath = request.url === "/" ? "/popup.html" : request.url;
-    const filePath = path.join(extensionPath, requestPath);
+    const parsedUrl = new URL(request.url ?? "/", "http://127.0.0.1");
+    const requestPath = parsedUrl.pathname === "/" ? "/popup.html" : parsedUrl.pathname;
+    const rootPath = path.resolve(extensionPath);
+    const filePath = path.resolve(rootPath, `.${requestPath}`);
+    if (filePath !== rootPath && !filePath.startsWith(`${rootPath}${path.sep}`)) {
+      response.writeHead(403);
+      response.end();
+      return;
+    }
     const contentType = filePath.endsWith(".js")
       ? "text/javascript"
       : filePath.endsWith(".css")
