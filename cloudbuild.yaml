@@ -26,7 +26,7 @@ steps:
         cd /workspace/.output/chrome-mv3
         zip -r "/workspace/domstack-${TAG_NAME}.zip" .
 
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:d4d7a9a1e3d824db170e56764d5bfe39d9f23924cd51505e0792d360cbed209c
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:df30191e2435b838d0d6e07c228ced843829703c9f966c0163175bad88b291be
     id: upload-chrome-web-store
     waitFor:
       - package-extension
@@ -47,7 +47,7 @@ steps:
           "$${UPLOAD_URL}"
         python3 -m json.tool /workspace/cws-upload-response.json
 
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:d4d7a9a1e3d824db170e56764d5bfe39d9f23924cd51505e0792d360cbed209c
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:df30191e2435b838d0d6e07c228ced843829703c9f966c0163175bad88b291be
     id: submit-chrome-web-store
     waitFor:
       - upload-chrome-web-store
