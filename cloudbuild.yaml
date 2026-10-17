@@ -13,7 +13,7 @@ steps:
         npx puppeteer browsers install chrome --install-deps
         npm run verify
 
-  - name: ubuntu:26.04@sha256:2260313b31c8c011cd2eebe728008efac1b3982be73eb71348ea2648d2c0e09b
+  - name: ubuntu:26.04@sha256:c098726dd9b9733f3e885f8de0ef375206a311b0a317eadc40d347b1115fb944
     id: package-extension
     waitFor:
       - test-extension
@@ -26,7 +26,7 @@ steps:
         cd /workspace/.output/chrome-mv3
         zip -r "/workspace/domstack-${TAG_NAME}.zip" .
 
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:d4d7a9a1e3d824db170e56764d5bfe39d9f23924cd51505e0792d360cbed209c
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:ffd36b9b80bb08b2dea60b58ca2b60dfa3a40a3c00f3e5732d6d113f4e7ffa45
     id: upload-chrome-web-store
     waitFor:
       - package-extension
@@ -47,7 +47,7 @@ steps:
           "$${UPLOAD_URL}"
         python3 -m json.tool /workspace/cws-upload-response.json
 
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:d4d7a9a1e3d824db170e56764d5bfe39d9f23924cd51505e0792d360cbed209c
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim@sha256:ffd36b9b80bb08b2dea60b58ca2b60dfa3a40a3c00f3e5732d6d113f4e7ffa45
     id: submit-chrome-web-store
     waitFor:
       - upload-chrome-web-store
