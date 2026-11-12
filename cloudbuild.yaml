@@ -1,5 +1,5 @@
 steps:
-  - name: node:24-bookworm@sha256:be23f54a88d34e8824c741b19b91064094f92c1c97b194144bfc8b50d67258e2
+  - name: node:24-bookworm@sha256:9d266751ca3d7fdbe651c878ffd5ad0a42fed49a18c283509267c97f025b7496
     id: test-extension
     entrypoint: bash
     env:
